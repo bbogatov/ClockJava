@@ -11,13 +11,10 @@ public class DataBaseOpenHelper extends SQLiteOpenHelper {
     DataBaseOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         dbName = name;
-        System.out.println("Метод инициализации");
-
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        System.out.println("Получили указание создать базу данных");
         Logger.log("Create database");
 
         db.execSQL("create table " + dbName +  " ("

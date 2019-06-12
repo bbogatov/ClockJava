@@ -1,6 +1,5 @@
 package com.example.clockjava;
 
-import android.widget.Switch;
 
 public class Alarm {
     private boolean enable;

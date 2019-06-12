@@ -5,6 +5,7 @@
     <string name="data_base_version">1.0</string>
     <string name="data_base_log">data_base_log</string>
     <string name="change_data">Do you want to make a change?</string>
+    <string name="delete_clock">Do you want to delete clock?</string>
     <string name="yes_chose">Yes</string>
     <string name="no_chose">No</string>
     <string name="clock_button_description">Button that response for adding new clocks</string>

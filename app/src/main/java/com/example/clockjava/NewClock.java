@@ -27,18 +27,29 @@ public class NewClock extends AppCompatActivity {
 
         discardButton = findViewById(R.id.discard_button);
         discardButton.setOnClickListener((View v) -> finish());
-
     }
-
 
     /**
      * Method adds a new clock to database.
      */
     private void addNewClock() {
         String time = getString(R.string.time_format_string, timePicker.getCurrentHour(), timePicker.getCurrentMinute());
-        LocalDataBase.addClock(time);
-        Toast.makeText(this, "Added new clock " + time, Toast.LENGTH_LONG).show();
+        long newClockIndex = addNewClockDataBase(time);
+        addNewAlarmManger(time, newClockIndex);
+
+        Toast.makeText(this, "Added new clock " + time, Toast.LENGTH_SHORT).show();
+        setResult(1);
         finish();
+    }
+
+    private void addNewAlarmManger(String time, long index) {
+        CreateAlarm createAlarm = new CreateAlarm();
+        createAlarm.addAlarmSignal(time, index);
+    }
+
+    private long addNewClockDataBase(String time) {
+        LocalDataBase localDataBase = LocalDataBase.init();
+        return localDataBase.addClock(time);
     }
 
 }

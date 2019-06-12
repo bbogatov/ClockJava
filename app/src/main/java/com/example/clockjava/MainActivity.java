@@ -34,15 +34,25 @@ public class MainActivity extends AppCompatActivity {
 
     private void addClock() {
         Intent newClockIntent = new Intent(this, NewClock.class);
-        startActivity(newClockIntent);
+        startActivityForResult(newClockIntent, 1);
     }
 
-
+    /**
+     * Method recreates recycler view if added or removed clock.
+     *
+     * @param resultCode 1 meas need redraw recyclerView
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //redraws recycler view
+        if (resultCode == 1) {
+            addRecyclerView();
+        }
+    }
 
     private void addRecyclerView() {
-
         alarmArrayList = getAlarms();
-        adapter = new ClockAdapter();
+        adapter = new ClockAdapter(this);
 
         alarmsRecyclerView = findViewById(R.id.alarms_list);
         alarmsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -51,41 +61,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private ArrayList<Alarm> getAlarms() {
-
-        ArrayList<Alarm> alarmArrayList = new ArrayList<>();
-        alarmArrayList.add(new Alarm(1L, "12:05", true));
-        alarmArrayList.add(new Alarm(2L, "13:05", true));
-        alarmArrayList.add(new Alarm(3L, "14:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-        alarmArrayList.add(new Alarm(4L, "15:05", true));
-
-        return alarmArrayList;
+        LocalDataBase localDataBase = LocalDataBase.init();
+        return localDataBase.getAlarms();
     }
-
-
 }
