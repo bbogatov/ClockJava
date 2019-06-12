@@ -4,6 +4,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * Class that provides database open helper.
+ * It helps creating and working with {@link LocalDataBase} which hold all alarms clocks.
+ *
+ */
 public class DataBaseOpenHelper extends SQLiteOpenHelper {
 
     private static String dbName;

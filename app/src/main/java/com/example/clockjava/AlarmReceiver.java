@@ -4,8 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-//TODO тут буду обрабатывать ноутификации которые сюдапопадают
-
+/**
+ * When alarms time starts, this code runs,
+ * at first shows notification and next plays sound to wake up user.
+ */
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -18,7 +20,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         Player player = Player.init();
         player.playAlarmSong();
-
 
         //Change switch value in database
         LocalDataBase localDataBase = LocalDataBase.init();

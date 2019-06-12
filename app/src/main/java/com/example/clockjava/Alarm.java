@@ -1,6 +1,8 @@
 package com.example.clockjava;
 
-
+/**
+ * This class used for keeping alarms from database in array that used in recyclerView
+ */
 public class Alarm {
     private boolean enable;
     private String time;
@@ -16,23 +18,12 @@ public class Alarm {
         return enable;
     }
 
-    public void setEnable(boolean enable) {
-        this.enable = enable;
-    }
-
     public String getTime() {
         return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
     }
 
     public Long getIndex() {
         return index;
     }
 
-    public void setIndex(Long index) {
-        this.index = index;
-    }
 }

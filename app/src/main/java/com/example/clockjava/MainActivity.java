@@ -10,6 +10,9 @@ import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
+/**
+ * Main activity, from this activity starts working application
+ */
 public class MainActivity extends AppCompatActivity {
 
     private ImageButton addClockButton;
@@ -32,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * If user wants to add new clock it clicks on {@link #addClockButton} and this code starts next activity.
+     */
     private void addClock() {
         Intent newClockIntent = new Intent(this, NewClock.class);
         startActivityForResult(newClockIntent, 1);
@@ -50,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method adds recycler view of all clocks
+     */
     private void addRecyclerView() {
         alarmArrayList = getAlarms();
         adapter = new ClockAdapter(this);
@@ -60,6 +69,11 @@ public class MainActivity extends AppCompatActivity {
         alarmsRecyclerView.setAdapter(adapter);
     }
 
+    /**
+     * Method takes from database all clocks.
+     *
+     * @return array of clocks (active and inactive)
+     */
     private ArrayList<Alarm> getAlarms() {
         LocalDataBase localDataBase = LocalDataBase.init();
         return localDataBase.getAlarms();

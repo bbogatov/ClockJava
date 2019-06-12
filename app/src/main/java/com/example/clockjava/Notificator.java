@@ -9,22 +9,38 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
-public class Notificator {
+/**
+ * This class used for creating notification. Implements singleton pattern,
+ * to initialize class object use {@link #init()} method.
+ */
+class Notificator {
     private static Notificator notificator;
     private static NotificationManager notificationManager;
 
-
+    /**
+     * Class constructor
+     */
     private Notificator() {
     }
 
-    public static Notificator init() {
+    /**
+     * Method that initializing static class object and returns it back.
+     *
+     * @return static class object
+     */
+    static Notificator init() {
         if (notificator == null) {
             notificator = new Notificator();
         }
         return notificator;
     }
 
-    public void createNotification(String time) {
+    /**
+     * Method that creates notification get
+     *
+     * @param time this time that shows on screen, must be that time when notification appears
+     */
+    void createNotification(String time) {
         Context context = App.getContext();
 
         Intent intent = new Intent(context, NotificationButtonReceiver.class);
@@ -35,6 +51,7 @@ public class Notificator {
         builder.setContentTitle("Alarm " + time);
         builder.setContentText("Wake up");
         builder.setOngoing(true);
+        builder.setSound(null);
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
         builder.addAction(R.drawable.clock_img, "I woke up", pendingIntent);
 
@@ -48,7 +65,7 @@ public class Notificator {
                             "Alarm Clock Alarm",
                             NotificationManager.IMPORTANCE_HIGH);
 
-
+            notificationChannel.setSound(null, null);
             builder.setChannelId("10002");
             notificationManager.createNotificationChannel(notificationChannel);
         }
@@ -56,7 +73,10 @@ public class Notificator {
         notificationManager.notify(0, builder.build());
     }
 
-    public void cancelNotificator() {
+    /**
+     * Use when user click "I woke up" button on notification, this used to remove notification from notification panel.
+     */
+    void cancelNotificator() {
         notificationManager.cancel(0);
     }
 

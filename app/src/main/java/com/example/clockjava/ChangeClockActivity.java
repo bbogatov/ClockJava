@@ -3,24 +3,52 @@ package com.example.clockjava;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TimePicker;
 
-//TODO после того как удаляем изменяем будильник с базы нужно удалить и AlertManager
+/**
+ * This class used for changing clock time or deleting clock.
+ */
 public class ChangeClockActivity extends AppCompatActivity {
 
+    /**
+     * Button that applies changes
+     */
     private ImageButton applyButton;
+
+    /**
+     * Button that discards changes
+     */
     private ImageButton discardButton;
+
+    /**
+     * TimePicker where user chose new clock time
+     */
     private TimePicker timePicker;
+
+    /**
+     * Button that response for deleting clock
+     */
     private Button deleteButton;
+
+    /**
+     * Current clock time which user wants to change
+     */
     private String time;
-    private boolean isEnable;
+
+    /**
+     * Index of element in database
+     */
     private long index;
+
+    /**
+     * If user changes time this boolean becomes true and main activity will redraw if user applies changes
+     */
     private boolean timeChanged;
 
     @Override
@@ -31,7 +59,6 @@ public class ChangeClockActivity extends AppCompatActivity {
         Intent intent = getIntent();
         time = intent.getStringExtra("time");
         index = intent.getLongExtra("index", 0);
-        isEnable = intent.getBooleanExtra("switch", false);
 
         timePicker = findViewById(R.id.change_clock_time_picker);
         timePicker.setIs24HourView(true);
@@ -50,12 +77,12 @@ public class ChangeClockActivity extends AppCompatActivity {
 
     /**
      * If user wants to make a change, clicks apply button.
-     * If timePicker has changes at time will run method {@link #changeTimeInDataBase()}
+     * If timePicker has changes at time will run method {@link #changeTime()}
      * If there was no changes {@link #finish()} method runs.
      */
     private void confirmTime() {
         if (timeChanged) {
-            changeTimeInDataBase();
+            changeTime();
             setResult(1);
             finish();
         } else {
@@ -66,14 +93,20 @@ public class ChangeClockActivity extends AppCompatActivity {
     /**
      * Method that changes alarm time in database
      */
-    private void changeTimeInDataBase() {
+    private void changeTime() {
         String newTime = getString(R.string.time_format_string, timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+
         LocalDataBase localDataBase = LocalDataBase.init();
         localDataBase.changeTime(index, newTime);
+        localDataBase.changeSwitch(index, true);
+
+        ClockAlarmsManger clockAlarmsManger = new ClockAlarmsManger();
+        clockAlarmsManger.changeAlarm(time, newTime, index);
     }
 
     /**
-     * If
+     * If user wants delete a clock, this method shows alert window to ask user does user sure.
+     * If user sure it deletes clock and {@link ClockAlarmsManger}.
      */
     private void deleteClock() {
 
@@ -86,6 +119,10 @@ public class ChangeClockActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 LocalDataBase localDataBase = LocalDataBase.init();
                 localDataBase.removeClock(index);
+
+                ClockAlarmsManger clockAlarmsManger = new ClockAlarmsManger();
+                clockAlarmsManger.removeAlarm(time, index);
+
                 setResult(1);
                 finish();
             }
@@ -148,7 +185,7 @@ public class ChangeClockActivity extends AppCompatActivity {
             alertDialog.setPositiveButton(R.string.yes_chose, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    changeTimeInDataBase();
+                    changeTime();
                 }
             });
 
