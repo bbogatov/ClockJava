@@ -100,7 +100,7 @@ public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolder>
             intent.putExtra("time", textView.getText().toString());
             intent.putExtra("index", index);
             intent.putExtra("switch", aSwitch.isChecked());
-            activity.startActivity(intent);
+            activity.startActivityForResult(intent, 1);
         }
 
         /**
