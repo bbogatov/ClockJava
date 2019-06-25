@@ -1,4 +1,4 @@
-package com.example.clockjava;
+package com.example.clockjava.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.example.clockjava.database.Alarm;
+import com.example.clockjava.ChangeClockActivity;
+import com.example.clockjava.managers.ClockAlarmsManger;
+import com.example.clockjava.R;
+import com.example.clockjava.database.LocalDataBase;
+
 import java.util.ArrayList;
 
 /**
@@ -20,7 +26,9 @@ public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolder>
     private ArrayList<Alarm> alarms;
     private Activity activity;
 
-    ClockAdapter(Activity activity) {
+
+
+    public ClockAdapter(Activity activity) {
         this.activity = activity;
     }
 
@@ -53,7 +61,7 @@ public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolder>
      * This class takes array of clocks and shows them on screen
      * @param alarms array of clocks
      */
-    void setAlarms(ArrayList<Alarm> alarms) {
+    public void setAlarms(ArrayList<Alarm> alarms) {
         this.alarms = alarms;
         notifyDataSetChanged();
     }
@@ -89,7 +97,7 @@ public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolder>
             localDataBase.changeSwitch(index, aSwitch.isChecked());
 
             ClockAlarmsManger clockAlarmsManger = new ClockAlarmsManger();
-            clockAlarmsManger.changeSwitch(aSwitch.isChecked(), index, textView.getText().toString());
+            clockAlarmsManger.onSwitchChanged(aSwitch.isChecked(), index, textView.getText().toString());
         }
 
         /**

@@ -7,10 +7,13 @@ import android.widget.ImageButton;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.clockjava.managers.ClockAlarmsManger;
+import com.example.clockjava.database.LocalDataBase;
+
 /**
  * Class used for creating new alarm clock.
  */
-public class NewClock extends AppCompatActivity {
+public class NewClockActivity extends AppCompatActivity {
 
     /**
      * Time picker user chose at which time clock should work

@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TimePicker;
 
+import com.example.clockjava.managers.ClockAlarmsManger;
+import com.example.clockjava.database.LocalDataBase;
+
 /**
  * This class used for changing clock time or deleting clock.
  */

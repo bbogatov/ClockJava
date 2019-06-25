@@ -1,8 +1,12 @@
-package com.example.clockjava;
+package com.example.clockjava.Receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
+import com.example.clockjava.database.LocalDataBase;
+import com.example.clockjava.Notificator;
+import com.example.clockjava.AlarmPlayer;
 
 /**
  * When alarms time starts, this code runs,
@@ -15,11 +19,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         String time = intent.getStringExtra("time");
 
 
-        Notificator notificator = Notificator.init();
-        notificator.createNotification(time);
+        Notificator.getInstance().createNotification(time);
 
-        Player player = Player.init();
-        player.playAlarmSong();
+        AlarmPlayer.getInstance().playAlarmSong();
 
         //Change switch value in database
         LocalDataBase localDataBase = LocalDataBase.init();

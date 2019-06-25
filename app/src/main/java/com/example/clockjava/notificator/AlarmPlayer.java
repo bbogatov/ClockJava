@@ -2,38 +2,41 @@ package com.example.clockjava;
 
 import android.media.MediaPlayer;
 
+import com.example.clockjava.logger.Logger;
+
 /**
  * Class used for creating {@link MediaPlayer} that plays music for wake up user.
  * This class implements singleton pattern.
- * If you want to use this class you should initialize player with {@link #init()} method.
+ * If you want to use this class you should initialize instance with {@link #getInstance()} method.
  */
-class Player {
-    private static Player player;
-    private MediaPlayer mediaPlayer;
+public class AlarmPlayer {
+
+    private static AlarmPlayer instance;
+    private static MediaPlayer mediaPlayer;
 
     /**
      * Private class constructor
      */
-    private Player() {
-        Logger.log("Initialize Player.class");
+    private AlarmPlayer() {
+        Logger.log("Initialize AlarmPlayer.class");
     }
 
     /**
-     * Method that initializing {@link Player} class, and returns static class object.
+     * Method that initializing {@link AlarmPlayer} class, and returns static class object.
      *
      * @return static class object
      */
-    static Player init() {
-        if (player == null) {
-            player = new Player();
+    public static AlarmPlayer getInstance() {
+        if (instance == null) {
+            instance = new AlarmPlayer();
         }
-        return player;
+        return instance;
     }
 
     /**
      * Method starts playing song to wake up user
      */
-    void playAlarmSong() {
+    public void playAlarmSong() {
         mediaPlayer = MediaPlayer.create(App.getContext(), R.raw.nature_sounds);
         mediaPlayer.setLooping(true);
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -45,17 +48,17 @@ class Player {
             }
         });
         mediaPlayer.start();
-        Logger.log("Player start playing music");
+        Logger.log("AlarmPlayer start playing music");
     }
 
     /**
      * Method used to stop playing music. If user clicked button "I woke up" in class {@link Notificator}
      */
-    void stopPlayer() {
+    public void stopPlayer() {
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
         }
-        Logger.log("Player stops playing music");
+        Logger.log("AlarmPlayer stops playing music" );
     }
 }

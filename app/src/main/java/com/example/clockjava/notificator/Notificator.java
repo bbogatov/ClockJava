@@ -9,12 +9,14 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
+import com.example.clockjava.receivers.NotificationButtonReceiver;
+
 /**
  * This class used for creating notification. Implements singleton pattern,
- * to initialize class object use {@link #init()} method.
+ * to initialize class object use {@link #getInstance()} method.
  */
-class Notificator {
-    private static Notificator notificator;
+public class Notificator {
+    private static Notificator instance;
     private static NotificationManager notificationManager;
 
     /**
@@ -28,11 +30,13 @@ class Notificator {
      *
      * @return static class object
      */
-    static Notificator init() {
-        if (notificator == null) {
-            notificator = new Notificator();
+    public static Notificator getInstance() {
+        if (instance == null) {
+            instance = new Notificator();
+            notificationManager =
+                    (NotificationManager) App.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
         }
-        return notificator;
+        return instance;
     }
 
     /**
@@ -40,7 +44,7 @@ class Notificator {
      *
      * @param time this time that shows on screen, must be that time when notification appears
      */
-    void createNotification(String time) {
+    public void createNotification(String time) {
         Context context = App.getContext();
 
         Intent intent = new Intent(context, NotificationButtonReceiver.class);
@@ -52,11 +56,9 @@ class Notificator {
         builder.setContentText("Wake up");
         builder.setOngoing(true);
         builder.setSound(null);
-        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        builder.setPriority(NotificationCompat.PRIORITY_MAX);
         builder.addAction(R.drawable.clock_img, "I woke up", pendingIntent);
 
-        notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
@@ -70,13 +72,14 @@ class Notificator {
             notificationManager.createNotificationChannel(notificationChannel);
         }
 
+
         notificationManager.notify(0, builder.build());
     }
 
     /**
      * Use when user click "I woke up" button on notification, this used to remove notification from notification panel.
      */
-    void cancelNotificator() {
+    public void cancelNotificator() {
         notificationManager.cancel(0);
     }
 

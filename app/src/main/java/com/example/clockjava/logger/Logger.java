@@ -1,6 +1,8 @@
-package com.example.clockjava;
+package com.example.clockjava.Logger;
 
 import android.util.Log;
+
+import com.example.clockjava.R;
 
 public final class Logger {
 

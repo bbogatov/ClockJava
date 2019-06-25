@@ -1,17 +1,22 @@
-package com.example.clockjava;
+package com.example.clockjava.DataBase;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.clockjava.Alarm;
+import com.example.clockjava.App;
+import com.example.clockjava.Logger.Logger;
+import com.example.clockjava.R;
+
 import java.util.ArrayList;
 
 /**
  * Class represents local database. Before work with it you should initialize it.
- * For example:  LocalDataBase localDataBase = LocalDataBase.init();
+ * For example:  LocalDataBase localDataBase = LocalDataBase.getInstance();
  * localDataBase.changeEnable(index);
  */
-class LocalDataBase {
+public class LocalDataBase {
 
     /**
      * Static class object
@@ -42,14 +47,14 @@ class LocalDataBase {
      *
      * @return static database
      */
-    static LocalDataBase init() {
+    public static LocalDataBase init() {
         if (localDataBase == null) {
             localDataBase = new LocalDataBase();
         }
         return localDataBase;
     }
 
-    long addClock(String time) {
+    public long addClock(String time) {
         if (sqLiteDatabase != null) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("time", time);
@@ -66,7 +71,7 @@ class LocalDataBase {
      *
      * @param index index in database
      */
-    void removeClock(long index) {
+    public void removeClock(long index) {
         if (sqLiteDatabase != null) {
             sqLiteDatabase.delete(DATA_BASE_NAME, "id = " + index, null);
             Logger.log("Removed clock from data base:  " + index + " + index");
@@ -79,7 +84,7 @@ class LocalDataBase {
      * @param index index of element in database that need change
      * @param time  new time in database
      */
-    void changeTime(long index, String time) {
+    public void changeTime(long index, String time) {
         if (sqLiteDatabase != null) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("time", time);
@@ -96,7 +101,7 @@ class LocalDataBase {
      *
      * @return arrayList of active and inactive clocks
      */
-    ArrayList<Alarm> getAlarms() {
+    public ArrayList<Alarm> getAlarms() {
         ArrayList<Alarm> alarms = new ArrayList<>();
 
         Cursor cursor = sqLiteDatabase.query(DATA_BASE_NAME, null, null, null, null, null, null);
@@ -124,7 +129,7 @@ class LocalDataBase {
      * @param index     index of element in database
      * @param isChecked new switch value
      */
-    void changeSwitch(long index, boolean isChecked) {
+    public void changeSwitch(long index, boolean isChecked) {
         if (sqLiteDatabase != null) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("switch", isChecked);
