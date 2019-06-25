@@ -1,7 +1,9 @@
-package com.example.clockjava;
+package com.example.clockjava.notificator;
 
 import android.media.MediaPlayer;
 
+import com.example.clockjava.App;
+import com.example.clockjava.R;
 import com.example.clockjava.logger.Logger;
 
 /**

@@ -14,15 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <receiver
-            android:name=".NotificationButtonReceiver"
-            android:enabled="true"
-            android:exported="true">
-        </receiver>
-        <receiver android:name=".AlarmReceiver" />
+        <receiver android:name=".receivers.NotificationButtonReceiver" />
+        <receiver android:name=".receivers.AlarmReceiver" />
 
-        <activity android:name=".ChangeClockActivity" />
-        <activity android:name=".NewClock" />
+        <activity android:name=".activities.changeClockActivity.ChangeClockActivity" />
+        <activity android:name=".activities.changeClockActivity.newClockActivity.NewClockActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

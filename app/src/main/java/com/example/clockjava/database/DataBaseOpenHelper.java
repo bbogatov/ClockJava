@@ -1,10 +1,10 @@
-package com.example.clockjava.DataBase;
+package com.example.clockjava.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.clockjava.Logger.Logger;
+import com.example.clockjava.logger.Logger;
 
 /**
  * Class that provides database open helper.

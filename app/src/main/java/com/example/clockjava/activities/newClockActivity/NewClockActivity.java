@@ -1,4 +1,4 @@
-package com.example.clockjava;
+package com.example.clockjava.activities.newClockActivity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.clockjava.R;
 import com.example.clockjava.managers.ClockAlarmsManger;
 import com.example.clockjava.database.LocalDataBase;
 

@@ -1,4 +1,4 @@
-package com.example.clockjava.adapters;
+package com.example.clockjava.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,11 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.example.clockjava.database.Alarm;
-import com.example.clockjava.ChangeClockActivity;
-import com.example.clockjava.managers.ClockAlarmsManger;
+import com.example.clockjava.activities.changeClockActivity.ChangeClockActivity;
 import com.example.clockjava.R;
-import com.example.clockjava.database.LocalDataBase;
+import com.example.clockjava.database.Alarm;
 
 import java.util.ArrayList;
 
@@ -25,7 +23,6 @@ public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolder>
 
     private ArrayList<Alarm> alarms;
     private Activity activity;
-
 
 
     public ClockAdapter(Activity activity) {
@@ -59,6 +56,7 @@ public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolder>
 
     /**
      * This class takes array of clocks and shows them on screen
+     *
      * @param alarms array of clocks
      */
     public void setAlarms(ArrayList<Alarm> alarms) {
@@ -69,41 +67,36 @@ public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolder>
     /**
      * Class that add one clock element to the screen
      */
-    class AlarmHolder extends RecyclerView.ViewHolder {
+    class AlarmHolder extends RecyclerView.ViewHolder implements ClockAdapterContract.View {
 
         private Switch aSwitch;
         private TextView textView;
         private long index;
+        private ClockListPresenter presenter;
 
         /**
          * Shows clocks elements on screen
-         *
          */
         AlarmHolder(@NonNull View itemView) {
             super(itemView);
+
+            presenter = new ClockListPresenter(this);
+
             aSwitch = itemView.findViewById(R.id.alarm_switcher);
             textView = itemView.findViewById(R.id.alarm_time_text_view);
 
-            aSwitch.setOnClickListener((View v) -> changeSwitch());
-            textView.setOnClickListener((View v) -> changeAlarm());
+
+            aSwitch.setOnClickListener((View v) -> presenter.switchChanged(index, aSwitch.isChecked(), textView.getText().toString()));
+
+            textView.setOnClickListener((View v) -> presenter.runChangeTimeActivity());
         }
 
-        /**
-         * If user changes switch on the screen this code changes values in database,
-         * and adds or removes AlarmManger that response for this clock.
-         */
-        private void changeSwitch() {
-            LocalDataBase localDataBase = LocalDataBase.init();
-            localDataBase.changeSwitch(index, aSwitch.isChecked());
-
-            ClockAlarmsManger clockAlarmsManger = new ClockAlarmsManger();
-            clockAlarmsManger.onSwitchChanged(aSwitch.isChecked(), index, textView.getText().toString());
-        }
-
+        //TODO убрать старт активити фор ризалт
         /**
          * When user want change alarm time or delete clock, user pressed this button
          */
-        private void changeAlarm() {
+        @Override
+        public void changeAlarmTime() {
             Intent intent = new Intent(activity, ChangeClockActivity.class);
             intent.putExtra("time", textView.getText().toString());
             intent.putExtra("index", index);

@@ -1,13 +1,12 @@
-package com.example.clockjava.activities;
+package com.example.clockjava;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
-import com.example.clockjava.fragments.AddClockFragment;
-import com.example.clockjava.fragments.ClockListFragment;
+import com.example.clockjava.fragments.addClockButtonFragment.AddClockFragment;
+import com.example.clockjava.fragments.clockListFragment.ClockListFragment;
 import com.example.clockjava.logger.Logger;
-import com.example.clockjava.R;
 
 /**
  * Main activity, from this activity starts working application
@@ -16,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private ClockListFragment alarmListFragment;
-    private AddClockFragment addClockFragment;
+    private AddClockFragment clockButtonFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +25,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         alarmListFragment = new ClockListFragment();
-        addClockFragment = new AddClockFragment();
-
+        clockButtonFragment = new AddClockFragment();
 
         FragmentTransaction upperFragmentTrans = getSupportFragmentManager().beginTransaction();
         upperFragmentTrans.add(R.id.fragFirst, alarmListFragment);
@@ -35,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         FragmentTransaction lowerFragmentTrans = getSupportFragmentManager().beginTransaction();
-        lowerFragmentTrans.add(R.id.fragSecond, addClockFragment);
+        lowerFragmentTrans.add(R.id.fragSecond, clockButtonFragment);
         lowerFragmentTrans.commit();
     }
 }

@@ -1,4 +1,4 @@
-package com.example.clockjava;
+package com.example.clockjava.activities.changeClockActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,13 +11,18 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TimePicker;
 
+import com.example.clockjava.R;
 import com.example.clockjava.managers.ClockAlarmsManger;
 import com.example.clockjava.database.LocalDataBase;
+
+
+//TODO провернить что бы не возвращало результат setResult() или оно должно обрабатывать результат
+
 
 /**
  * This class used for changing clock time or deleting clock.
  */
-public class ChangeClockActivity extends AppCompatActivity {
+public class ChangeClockActivity extends AppCompatActivity implements ChangeClockContract.View {
 
     /**
      * Button that applies changes
@@ -54,10 +59,16 @@ public class ChangeClockActivity extends AppCompatActivity {
      */
     private boolean timeChanged;
 
+
+    private ChangeClockContract.Presenter presenter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_clock);
+
+        presenter = new ChangeClockPresenter(this);
 
         Intent intent = getIntent();
         time = intent.getStringExtra("time");
@@ -85,6 +96,7 @@ public class ChangeClockActivity extends AppCompatActivity {
      */
     private void confirmTime() {
         if (timeChanged) {
+
             changeTime();
             setResult(1);
             finish();

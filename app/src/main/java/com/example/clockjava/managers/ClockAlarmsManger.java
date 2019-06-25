@@ -1,4 +1,4 @@
-package com.example.clockjava;
+package com.example.clockjava.managers;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import com.example.clockjava.App;
 import com.example.clockjava.logger.Logger;
 import com.example.clockjava.receivers.AlarmReceiver;
 
@@ -86,7 +87,14 @@ public class ClockAlarmsManger {
                 + "; New time = " + newTime);
     }
 
-    public void changeSwitch(boolean isChecked, long index, String time) {
+    /**
+     * When switch changes its value code removes or add new alarm signal.
+     *
+     * @param isChecked switch value, if true it activates clock, if false it inactivates clock
+     * @param index index of element that need change
+     * @param time alarm time
+     */
+    public void onSwitchChanged(boolean isChecked, long index, String time) {
         if (isChecked) {
             addAlarmSignal(time, index);
         } else {

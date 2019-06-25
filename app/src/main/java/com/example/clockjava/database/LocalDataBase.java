@@ -1,12 +1,11 @@
-package com.example.clockjava.DataBase;
+package com.example.clockjava.database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.clockjava.Alarm;
 import com.example.clockjava.App;
-import com.example.clockjava.Logger.Logger;
+import com.example.clockjava.logger.Logger;
 import com.example.clockjava.R;
 
 import java.util.ArrayList;

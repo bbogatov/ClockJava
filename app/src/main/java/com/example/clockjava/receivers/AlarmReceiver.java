@@ -1,12 +1,12 @@
-package com.example.clockjava.Receivers;
+package com.example.clockjava.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
 import com.example.clockjava.database.LocalDataBase;
-import com.example.clockjava.Notificator;
-import com.example.clockjava.AlarmPlayer;
+import com.example.clockjava.notificator.Notificator;
+import com.example.clockjava.notificator.AlarmPlayer;
 
 /**
  * When alarms time starts, this code runs,

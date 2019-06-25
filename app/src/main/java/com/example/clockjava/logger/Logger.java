@@ -1,4 +1,4 @@
-package com.example.clockjava.Logger;
+package com.example.clockjava.logger;
 
 import android.util.Log;
 
