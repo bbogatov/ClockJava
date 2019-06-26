@@ -12,8 +12,6 @@ import android.widget.ImageButton;
 import android.widget.TimePicker;
 
 import com.example.clockjava.R;
-import com.example.clockjava.managers.ClockAlarmsManger;
-import com.example.clockjava.database.LocalDataBase;
 
 
 //TODO провернить что бы не возвращало результат setResult() или оно должно обрабатывать результат
@@ -76,77 +74,56 @@ public class ChangeClockActivity extends AppCompatActivity implements ChangeCloc
 
         timePicker = findViewById(R.id.change_clock_time_picker);
         timePicker.setIs24HourView(true);
-        setAlertTime(timePicker, time);
+
+        presenter.setAlarmTimeTimePicker(time);
+
 
         applyButton = findViewById(R.id.active_clock_settings_image_button);
-        applyButton.setOnClickListener((View v) -> confirmTime());
+        applyButton.setOnClickListener((View v) ->
+                presenter.applyButtonClicked(timeChanged,
+                        getString(R.string.time_format_string, timePicker.getCurrentHour(), timePicker.getCurrentMinute()),
+                        time, index));
+
 
         discardButton = findViewById(R.id.close_clock_settings_image_button);
-        discardButton.setOnClickListener((View v) -> closeButtonAction());
+        discardButton.setOnClickListener((View v) -> presenter.discardButtonClicked(timeChanged));
 
 
         deleteButton = findViewById(R.id.delete_button);
-        deleteButton.setOnClickListener((View v) -> deleteClock());
+        deleteButton.setOnClickListener((View v) -> presenter.deleteButtonClicked());
     }
 
     /**
-     * If user wants to make a change, clicks apply button.
-     * If timePicker has changes at time will run method {@link #changeTime()}
-     * If there was no changes {@link #finish()} method runs.
+     * Method finish current activity.
      */
-    private void confirmTime() {
-        if (timeChanged) {
-
-            changeTime();
-            setResult(1);
-            finish();
-        } else {
-            finish();
-        }
+    @Override
+    public void closeActivity() {
+        finish();
     }
 
     /**
-     * Method that changes alarm time in database
+     * Method shows alert window that asks user does it really wants delete clock.
      */
-    private void changeTime() {
-        String newTime = getString(R.string.time_format_string, timePicker.getCurrentHour(), timePicker.getCurrentMinute());
-
-        LocalDataBase localDataBase = LocalDataBase.init();
-        localDataBase.changeTime(index, newTime);
-        localDataBase.changeSwitch(index, true);
-
-        ClockAlarmsManger clockAlarmsManger = new ClockAlarmsManger();
-        clockAlarmsManger.changeAlarm(time, newTime, index);
-    }
-
-    /**
-     * If user wants delete a clock, this method shows alert window to ask user does user sure.
-     * If user sure it deletes clock and {@link ClockAlarmsManger}.
-     */
-    private void deleteClock() {
+    @Override
+    public void showDeleteAlertWindow() {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Dialog_Alert);
         alertDialog.setCancelable(false);
         alertDialog.setMessage(R.string.delete_clock);
 
+        //User clicks delete clock
         alertDialog.setPositiveButton(R.string.yes_chose, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                LocalDataBase localDataBase = LocalDataBase.init();
-                localDataBase.removeClock(index);
-
-                ClockAlarmsManger clockAlarmsManger = new ClockAlarmsManger();
-                clockAlarmsManger.removeAlarm(time, index);
-
-                setResult(1);
-                finish();
+                presenter.deleteClockPositiveButtonClicked(index, time);
             }
         });
 
+        //User don't wanna delete button
         alertDialog.setNegativeButton(R.string.no_chose, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                finish();
+                presenter.deleteClockNegativeButtonClicked();
             }
         });
 
@@ -156,10 +133,10 @@ public class ChangeClockActivity extends AppCompatActivity implements ChangeCloc
     /**
      * Method set alert time in timePicker. Because timePicker starts working with current system time.
      *
-     * @param timePicker current timePicker on screen
-     * @param time       alert time of clock
+     * @param time alert time of clock
      */
-    private void setAlertTime(TimePicker timePicker, String time) {
+    @Override
+    public void setAlertTime(String time) {
         int hours = Integer.valueOf(time.substring(0, 2));
         int minutes = Integer.valueOf(time.substring(3, 5));
 
@@ -178,42 +155,39 @@ public class ChangeClockActivity extends AppCompatActivity implements ChangeCloc
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                timeChanged = true;
+                timeChanged = presenter.userChangesTime();
             }
         });
     }
 
+
     /**
-     * If user click close button this method runs.
-     * There two cases if user change time and not.
-     * In first case alert window asks user does he want to make a change, if not main activity starts.
-     * If user wants to make a change in data base changes value to new one, and returns main activity.
+     * When user made changes and click close button this code will run, and ask it does it wants make any changes.
      */
-    private void closeButtonAction() {
+    @Override
+    public void showAlertWindowSaveData() {
 
-        if (timeChanged) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Dialog_Alert);
+        alertDialog.setCancelable(false);
+        alertDialog.setMessage(R.string.change_data);
 
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Dialog_Alert);
-            alertDialog.setCancelable(false);
-            alertDialog.setMessage(R.string.change_data);
+        alertDialog.setPositiveButton(R.string.yes_chose, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                presenter.positiveAlertButtonClicked(timeChanged,
+                        getString(R.string.time_format_string, timePicker.getCurrentHour(), timePicker.getCurrentMinute()),
+                        time, index);
+            }
+        });
 
-            alertDialog.setPositiveButton(R.string.yes_chose, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    changeTime();
-                }
-            });
+        alertDialog.setNegativeButton(R.string.no_chose, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                presenter.negativeAlertButtonClicked();
+            }
+        });
 
-            alertDialog.setNegativeButton(R.string.no_chose, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                }
-            });
+        alertDialog.show();
 
-            alertDialog.show();
-        } else {
-            finish();
-        }
     }
 }

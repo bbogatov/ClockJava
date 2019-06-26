@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.example.clockjava.activities.changeClockActivity.ChangeClockActivity;
 import com.example.clockjava.R;
+import com.example.clockjava.activities.changeClockActivity.ChangeClockActivity;
 import com.example.clockjava.database.Alarm;
 
 import java.util.ArrayList;

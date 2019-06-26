@@ -1,4 +1,4 @@
-package com.example.clockjava.managers;
+package com.example.clockjava.alarmManger;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

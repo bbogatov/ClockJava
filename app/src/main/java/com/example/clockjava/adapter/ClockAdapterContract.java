@@ -8,7 +8,6 @@ public interface ClockAdapterContract {
 
     interface Presenter {
         void switchChanged(long index, boolean aSwitch, String time);
-
         void runChangeTimeActivity();
     }
 }

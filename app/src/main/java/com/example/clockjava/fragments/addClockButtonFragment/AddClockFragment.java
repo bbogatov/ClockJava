@@ -10,8 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import com.example.clockjava.activities.changeClockActivity.newClockActivity.NewClockActivity;
 import com.example.clockjava.R;
+import com.example.clockjava.activities.newClockActivity.NewClockActivity;
+
 
 /**
  * Class that response for add new clock button

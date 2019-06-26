@@ -8,13 +8,11 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.clockjava.R;
-import com.example.clockjava.managers.ClockAlarmsManger;
-import com.example.clockjava.database.LocalDataBase;
 
 /**
  * Class used for creating new alarm clock.
  */
-public class NewClockActivity extends AppCompatActivity {
+public class NewClockActivity extends AppCompatActivity implements NewClockContract.View {
 
     /**
      * Time picker user chose at which time clock should work
@@ -31,58 +29,42 @@ public class NewClockActivity extends AppCompatActivity {
      */
     private ImageButton discardButton;
 
+    private NewClockContract.Presenter presenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_clock);
 
+        presenter = new NewClockPresenter(this);
+
         timePicker = findViewById(R.id.time_picker_new_clock);
         timePicker.setIs24HourView(true);
 
         applyButton = findViewById(R.id.apply_button);
-        applyButton.setOnClickListener((View v) -> addNewClock());
+        applyButton.setOnClickListener((View v) -> presenter.addNewClockBackMainActivity(getString(R.string.time_format_string, timePicker.getCurrentHour(), timePicker.getCurrentMinute())));
 
         discardButton = findViewById(R.id.discard_button);
-        discardButton.setOnClickListener((View v) -> finish());
+        discardButton.setOnClickListener((View v) -> presenter.finishActivity());
     }
 
-    /**
-     * Method adds a new clock to database.
-     */
-    private void addNewClock() {
-        String time = getString(R.string.time_format_string, timePicker.getCurrentHour(), timePicker.getCurrentMinute());
-        long newClockIndex = addNewClockDataBase(time);
-        addNewAlarmManger(time, newClockIndex);
 
-        Toast.makeText(this, "Added new clock " + time, Toast.LENGTH_SHORT).show();
-        setResult(1);
+    /**
+     * Method that closed current activity
+     */
+    @Override
+    public void finishActivity() {
         finish();
     }
 
     /**
-     * Method creates new {@link android.app.AlarmManager} for {@code time}.
-     *
-     * @param time  time when starts clock alarm, should lock like this HH:mm for example 15:05 or 02:34
-     *              using 24-hours format with leading zeroes
-     * @param index index of new added clock in database
+     * This method shows message when clock successfully added
+     * @param time
      */
-    private void addNewAlarmManger(String time, long index) {
-        ClockAlarmsManger clockAlarmsManger = new ClockAlarmsManger();
-        clockAlarmsManger.addAlarmSignal(time, index);
+    @Override
+    public void showMessage(String time) {
+        Toast.makeText(this, "Added new clock " + time, Toast.LENGTH_SHORT).show();
     }
-
-    /**
-     * Method adds new clock to database.
-     *
-     * @param time time when starts clock alarm, should lock like this HH:mm for example 15:05 or 02:34
-     *             using 24-hours format with leading zeroes
-     * @return index of new added clock from database, this index auto increasing
-     */
-    private long addNewClockDataBase(String time) {
-        LocalDataBase localDataBase = LocalDataBase.init();
-        return localDataBase.addClock(time);
-    }
-
 }
 
 

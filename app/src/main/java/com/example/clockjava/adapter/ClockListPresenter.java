@@ -1,7 +1,7 @@
 package com.example.clockjava.adapter;
 
 import com.example.clockjava.database.LocalDataBase;
-import com.example.clockjava.managers.ClockAlarmsManger;
+import com.example.clockjava.alarmManger.ClockAlarmsManger;
 
 public class ClockListPresenter implements ClockAdapterContract.Presenter {
 

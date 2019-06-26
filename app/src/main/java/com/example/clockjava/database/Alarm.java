@@ -42,4 +42,13 @@ public class Alarm {
     public int hashCode() {
         return Objects.hash(enable, time, index);
     }
+
+    @Override
+    public String toString() {
+        return "Alarm{" +
+                "enable=" + enable +
+                ", time='" + time + '\'' +
+                ", index=" + index +
+                '}';
+    }
 }
