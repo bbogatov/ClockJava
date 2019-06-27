@@ -1,16 +1,17 @@
 package com.example.clockjava.activities.changeClockActivity;
 
+import android.widget.TimePicker;
+
 interface ChangeClockContract {
 
     interface View {
         void closeActivity();
         void showDeleteAlertWindow();
-        void setAlertTime(String time);
         void showAlertWindowSaveData();
     }
 
     interface Presenter {
-        void setAlarmTimeTimePicker(String time);
+        void setAlarmTimeTimePicker(String time, TimePicker timePicker);
         void applyButtonClicked(boolean timeChanged, String newTime, String oldTime, long index);
         void discardButtonClicked(boolean timeChanged);
         void deleteButtonClicked();

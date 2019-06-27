@@ -28,12 +28,12 @@ public class MainActivity extends AppCompatActivity {
         clockButtonFragment = new AddClockFragment();
 
         FragmentTransaction upperFragmentTrans = getSupportFragmentManager().beginTransaction();
-        upperFragmentTrans.add(R.id.fragFirst, alarmListFragment);
+        upperFragmentTrans.add(R.id.list_fragment, alarmListFragment);
         upperFragmentTrans.commit();
 
 
         FragmentTransaction lowerFragmentTrans = getSupportFragmentManager().beginTransaction();
-        lowerFragmentTrans.add(R.id.fragSecond, clockButtonFragment);
+        lowerFragmentTrans.add(R.id.button_freagment, clockButtonFragment);
         lowerFragmentTrans.commit();
     }
 }

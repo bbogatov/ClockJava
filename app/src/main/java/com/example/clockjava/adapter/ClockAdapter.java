@@ -21,10 +21,20 @@ import java.util.ArrayList;
  */
 public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolder> {
 
+    /**
+     * List of alarm clocks from database
+     */
     private ArrayList<Alarm> alarms;
+
+    /**
+     * Activity where need show recycler view
+     */
     private Activity activity;
 
-
+    /**
+     * Main constructor that creates recycler view
+     * @param activity activty where need show recycler view
+     */
     public ClockAdapter(Activity activity) {
         this.activity = activity;
     }
@@ -85,13 +95,12 @@ public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolder>
             aSwitch = itemView.findViewById(R.id.alarm_switcher);
             textView = itemView.findViewById(R.id.alarm_time_text_view);
 
+            aSwitch.setOnClickListener((View v) -> presenter.switchPressed(index, aSwitch.isChecked(), textView.getText().toString()));
 
-            aSwitch.setOnClickListener((View v) -> presenter.switchChanged(index, aSwitch.isChecked(), textView.getText().toString()));
-
-            textView.setOnClickListener((View v) -> presenter.runChangeTimeActivity());
+            textView.setOnClickListener((View v) -> presenter.textViewPressed());
         }
 
-        //TODO убрать старт активити фор ризалт
+
         /**
          * When user want change alarm time or delete clock, user pressed this button
          */
@@ -101,7 +110,7 @@ public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolder>
             intent.putExtra("time", textView.getText().toString());
             intent.putExtra("index", index);
             intent.putExtra("switch", aSwitch.isChecked());
-            activity.startActivityForResult(intent, 1);
+            activity.startActivity(intent);
         }
 
         /**
@@ -112,7 +121,7 @@ public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolder>
         void bind(Alarm alarm) {
             aSwitch.setChecked(alarm.getEnable());
             textView.setText(alarm.getTime());
-            index = alarm.getIndex();
+            index = alarm.getId();
         }
     }
 }

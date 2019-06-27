@@ -1,10 +1,12 @@
 package com.example.clockjava.activities.changeClockActivity;
 
 
+import android.os.Build;
+import android.widget.TimePicker;
+
 import com.example.clockjava.database.LocalDataBase;
 import com.example.clockjava.alarmManger.ClockAlarmsManger;
 
-//TODO тут нужно будет еще вызывать RecyclerView что бы сообщить об изменениях
 class ChangeClockPresenter implements ChangeClockContract.Presenter {
     private ChangeClockContract.View view;
 
@@ -13,13 +15,26 @@ class ChangeClockPresenter implements ChangeClockContract.Presenter {
     }
 
     /**
-     * Method that sets alarm time on time picker.
+     * Method that sets current alarm time on time picker.
      *
      * @param time time when clock should starts.
      */
     @Override
-    public void setAlarmTimeTimePicker(String time) {
-        view.setAlertTime(time);
+    public void setAlarmTimeTimePicker(String time, TimePicker timePicker) {
+        int hours = Integer.valueOf(time.substring(0, 2));
+        int minutes = Integer.valueOf(time.substring(3, 5));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            timePicker.setHour(hours);
+        } else {
+            timePicker.setCurrentHour(hours);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            timePicker.setMinute(minutes);
+        } else {
+            timePicker.setCurrentMinute(minutes);
+        }
     }
 
     /**
@@ -39,10 +54,17 @@ class ChangeClockPresenter implements ChangeClockContract.Presenter {
         view.closeActivity();
     }
 
+    /**
+     * If user clicks close button this code checks does it made any changes.
+     * If user made changes it code shows alarm window and asks does user wants to save data.
+     * If user dont wanna save any changes code returns main activity.
+     *
+     * @param timeChanged if user made changes true, in other cases false.
+     */
     @Override
     public void discardButtonClicked(boolean timeChanged) {
         if (timeChanged) {
-            view.showDeleteAlertWindow();
+            view.showAlertWindowSaveData();
         } else {
             view.closeActivity();
         }

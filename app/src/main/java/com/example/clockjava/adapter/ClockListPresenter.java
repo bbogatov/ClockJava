@@ -18,7 +18,7 @@ public class ClockListPresenter implements ClockAdapterContract.Presenter {
      * @param aSwitch new switch value
      */
     @Override
-    public void switchChanged(long index, boolean aSwitch, String time) {
+    public void switchPressed(long index, boolean aSwitch, String time) {
         changeDataBaseValue(index, aSwitch);
         changeAlarmManager(index, aSwitch, time);
     }
@@ -27,7 +27,7 @@ public class ClockListPresenter implements ClockAdapterContract.Presenter {
      * User clicks time
      */
     @Override
-    public void runChangeTimeActivity() {
+    public void textViewPressed() {
         alarmHolder.changeAlarmTime();
     }
 

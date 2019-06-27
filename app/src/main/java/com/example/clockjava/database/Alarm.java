@@ -8,12 +8,12 @@ import java.util.Objects;
 public class Alarm {
     private final boolean enable;
     private final String time;
-    private final Long index;
+    private final Long id;
 
-    public Alarm(Long index, String time, boolean enable) {
+    public Alarm(Long id, String time, boolean enable) {
         this.enable = enable;
         this.time = time;
-        this.index = index;
+        this.id = id;
     }
 
     public boolean getEnable() {
@@ -24,8 +24,8 @@ public class Alarm {
         return time;
     }
 
-    public Long getIndex() {
-        return index;
+    public Long getId() {
+        return id;
     }
 
     @Override
@@ -35,12 +35,12 @@ public class Alarm {
         Alarm alarm = (Alarm) o;
         return enable == alarm.enable &&
                 time.equals(alarm.time) &&
-                index.equals(alarm.index);
+                id.equals(alarm.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(enable, time, index);
+        return Objects.hash(enable, time, id);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class Alarm {
         return "Alarm{" +
                 "enable=" + enable +
                 ", time='" + time + '\'' +
-                ", index=" + index +
+                ", id=" + id +
                 '}';
     }
 }

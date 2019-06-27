@@ -10,10 +10,12 @@ import com.example.clockjava.R;
 
 import java.util.ArrayList;
 
+//TODO нужно будет еще вызывать RecyclerView используя  в DataBase что бы сообщить об изменениях
+
 /**
  * Class represents local database. Before work with it you should initialize it.
  * For example:  LocalDataBase localDataBase = LocalDataBase.getInstance();
- * localDataBase.changeEnable(index);
+ * localDataBase.changeEnable(id);
  */
 public class LocalDataBase {
 
@@ -58,9 +60,9 @@ public class LocalDataBase {
             ContentValues contentValues = new ContentValues();
             contentValues.put("time", time);
             contentValues.put("switch", true);
-            long index = sqLiteDatabase.insert(DATA_BASE_NAME, null, contentValues);
-            Logger.log("Added new clock to data base: time = " + time + "; id = " + index);
-            return index;
+            long id = sqLiteDatabase.insert(DATA_BASE_NAME, null, contentValues);
+            Logger.log("Added new clock to data base: time = " + time + "; id = " + id);
+            return id;
         }
         return 0;
     }
@@ -68,29 +70,29 @@ public class LocalDataBase {
     /**
      * Method that removes clock from database by its index.
      *
-     * @param index index in database
+     * @param id index in database
      */
-    public void removeClock(long index) {
+    public void removeClock(long id) {
         if (sqLiteDatabase != null) {
-            sqLiteDatabase.delete(DATA_BASE_NAME, "id = " + index, null);
-            Logger.log("Removed clock from data base:  " + index + " + index");
+            sqLiteDatabase.delete(DATA_BASE_NAME, "id = " + id, null);
+            Logger.log("Removed clock from data base:  " + id + " + Id");
         }
     }
 
     /**
      * Method that changes time and switch values in data base
      *
-     * @param index index of element in database that need change
-     * @param time  new time in database
+     * @param id   id of element in database that need change
+     * @param time new time in database
      */
-    public void changeTime(long index, String time) {
+    public void changeTime(long id, String time) {
         if (sqLiteDatabase != null) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("time", time);
-            sqLiteDatabase.update(DATA_BASE_NAME, contentValues, "id = ?", new String[]{String.valueOf(index)});
+            sqLiteDatabase.update(DATA_BASE_NAME, contentValues, "id = ?", new String[]{String.valueOf(id)});
             Logger.log("Updated time in data base:"
                     + " time = " + time
-                    + "; id = " + index
+                    + "; id = " + id
                     + "; switch = " + true);
         }
     }
@@ -125,18 +127,18 @@ public class LocalDataBase {
     /**
      * Change switch value in data base.
      *
-     * @param index     index of element in database
+     * @param id        index of element in database
      * @param isChecked new switch value
      */
-    public void changeSwitch(long index, boolean isChecked) {
+    public void changeSwitch(long id, boolean isChecked) {
         if (sqLiteDatabase != null) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("switch", isChecked);
 
-            sqLiteDatabase.update(DATA_BASE_NAME, contentValues, "id = ?", new String[]{String.valueOf(index)});
+            sqLiteDatabase.update(DATA_BASE_NAME, contentValues, "id = ?", new String[]{String.valueOf(id)});
 
             Logger.log("Updated switch in data base:"
-                    + "; id = " + index
+                    + "; id = " + id
                     + "; switch = " + true);
         }
     }

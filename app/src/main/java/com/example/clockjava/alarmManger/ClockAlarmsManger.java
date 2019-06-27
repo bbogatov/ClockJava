@@ -10,6 +10,8 @@ import com.example.clockjava.App;
 import com.example.clockjava.logger.Logger;
 import com.example.clockjava.receivers.AlarmReceiver;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -25,24 +27,53 @@ public class ClockAlarmsManger {
     private PendingIntent pendingIntent;
     private AlarmManager alarmManager;
 
-    private void initializeIntentPenIntentAlarmManger(String time, long index) {
-        context = App.getContext();
-
-        intent = new Intent(context, AlarmReceiver.class);
-        intent.setAction("ClockAlarm " + time);
-        intent.putExtra("time", time);
-        intent.putExtra("index", index);
-        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-
-        pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+    /**
+     * Method that initializes and returns context
+     */
+    private Context getContext() {
+        return App.getContext();
     }
 
-    public void addAlarmSignal(String time, long index) {
-        initializeIntentPenIntentAlarmManger(time, index);
-        long startAlarmTime = getClockTime(time);
+    /**
+     * Method creates intent that used for pending intent and alarm manager.
+     *
+     * @param time time when alarm manager must start. Must have a look like this HH:MM
+     *             for example 01:05 or 23:45
+     * @param id   id of clock in database
+     * @return returns intent that
+     */
+    private Intent getIntent(String time, long id, Context context) {
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        intent.setAction("ClockAlarm " + time);
+        intent.putExtra("time", time);
+        intent.putExtra("id", id);
+        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+        return intent;
+    }
 
+    /**
+     * Method returns pending intent for clock.
+     *
+     * @param intent alarm intent that will be pending
+     * @return pending intent
+     */
+    private PendingIntent getPendingIntent(Context context, Intent intent) {
+        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+    }
+
+    /**
+     *
+     * @param time
+     * @param id
+     */
+    public void addAlarmSignal(String time, long id) {
+        context = getContext();
+        intent = getIntent(time, id, context);
+        pendingIntent = getPendingIntent(context, intent);
+        alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+
+        long startAlarmTime = getClockTime(time);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, startAlarmTime, pendingIntent);
@@ -50,39 +81,42 @@ public class ClockAlarmsManger {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, startAlarmTime, pendingIntent);
         }
 
-        Logger.log("Create new alarmManager. Time = " + time + "; index = " + index);
+        Logger.log("Create new alarmManager. Time = " + time + "; id = " + id);
     }
 
 
     /**
      * Method removes alarm signal
      *
-     * @param time  time when starts clock alarm, should lock like this HH:mm for example 15:05 or 02:34
-     *              using 24-hours format with leading zeroes
-     * @param index index of alarm in database
+     * @param time time when starts clock alarm, should lock like this HH:mm for example 15:05 or 02:34
+     *             using 24-hours format with leading zeroes
+     * @param id   id of alarm in database
      */
-    public void removeAlarm(String time, long index) {
-        initializeIntentPenIntentAlarmManger(time, index);
+    public void removeAlarm(String time, long id) {
+        context = getContext();
+        intent = getIntent(time, id, context);
+        pendingIntent = getPendingIntent(context, intent);
+        alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         pendingIntent.cancel();
         alarmManager.cancel(pendingIntent);
-        Logger.log("Remove alarmManager. Time = " + time + "; index = " + index);
+        Logger.log("Remove alarmManager. Time = " + time + "; Id = " + id);
     }
 
     /**
      * If user change alarm time for clock this method removes old signal and add new one.
-     * Index in database doesn't changes.
+     * ID in database doesn't changes.
      *
      * @param oldTime alarm time that need change, should look like this HH:mm for example 15:05 or 02:34
      *                using 24-hours format with leading zeroes
      * @param newTime future alarm time, should look like this HH:mm for example 15:05 or 02:34
      *                using 24-hours format with leading zeroes
-     * @param index   alarm clock index in database
+     * @param id      alarm clock id in database
      */
-    public void changeAlarm(String oldTime, String newTime, long index) {
-        removeAlarm(oldTime, index);
-        addAlarmSignal(newTime, index);
-        Logger.log("Change time for alarmManager. Index = " + index
+    public void changeAlarm(String oldTime, String newTime, long id) {
+        removeAlarm(oldTime, id);
+        addAlarmSignal(newTime, id);
+        Logger.log("Change time for alarmManager. Id = " + id
                 + "; Old time = " + oldTime
                 + "; New time = " + newTime);
     }
@@ -91,16 +125,16 @@ public class ClockAlarmsManger {
      * When switch changes its value code removes or add new alarm signal.
      *
      * @param isChecked switch value, if true it activates clock, if false it inactivates clock
-     * @param index index of element that need change
-     * @param time alarm time
+     * @param id        id of element that need change
+     * @param time      alarm time
      */
-    public void onSwitchChanged(boolean isChecked, long index, String time) {
+    public void onSwitchChanged(boolean isChecked, long id, String time) {
         if (isChecked) {
-            addAlarmSignal(time, index);
+            addAlarmSignal(time, id);
         } else {
-            removeAlarm(time, index);
+            removeAlarm(time, id);
         }
-        Logger.log("Change alarm manager switch. Time = " + time + "; index = " + index +
+        Logger.log("Change alarm manager switch. Time = " + time + "; id = " + id +
                 "; switch old value " + !isChecked + "; switch new value " + isChecked);
     }
 
@@ -116,7 +150,7 @@ public class ClockAlarmsManger {
      *             using 24-hours format with leading zeroes
      * @return
      */
-    private long getClockTime(String time) {
+    private static long getClockTime(String time) {
 
         Calendar calendarAlarmTime = Calendar.getInstance();
         calendarAlarmTime.set(Calendar.HOUR_OF_DAY, Integer.valueOf(time.substring(0, 2)));

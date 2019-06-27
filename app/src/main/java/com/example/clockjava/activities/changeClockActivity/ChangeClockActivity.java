@@ -2,7 +2,6 @@ package com.example.clockjava.activities.changeClockActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -74,8 +73,14 @@ public class ChangeClockActivity extends AppCompatActivity implements ChangeCloc
 
         timePicker = findViewById(R.id.change_clock_time_picker);
         timePicker.setIs24HourView(true);
-
-        presenter.setAlarmTimeTimePicker(time);
+        //method that sets current alarm time on timepicker
+        presenter.setAlarmTimeTimePicker(time, timePicker);
+        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                timeChanged = presenter.userChangesTime();
+            }
+        });
 
 
         applyButton = findViewById(R.id.active_clock_settings_image_button);
@@ -102,7 +107,7 @@ public class ChangeClockActivity extends AppCompatActivity implements ChangeCloc
     }
 
     /**
-     * Method shows alert window that asks user does it really wants delete clock.
+     * Method shows alert window that asks user does it really wants delete a clock.
      */
     @Override
     public void showDeleteAlertWindow() {
@@ -128,36 +133,6 @@ public class ChangeClockActivity extends AppCompatActivity implements ChangeCloc
         });
 
         alertDialog.show();
-    }
-
-    /**
-     * Method set alert time in timePicker. Because timePicker starts working with current system time.
-     *
-     * @param time alert time of clock
-     */
-    @Override
-    public void setAlertTime(String time) {
-        int hours = Integer.valueOf(time.substring(0, 2));
-        int minutes = Integer.valueOf(time.substring(3, 5));
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            timePicker.setHour(hours);
-        } else {
-            timePicker.setCurrentHour(hours);
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            timePicker.setMinute(minutes);
-        } else {
-            timePicker.setCurrentMinute(minutes);
-        }
-
-        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-            @Override
-            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                timeChanged = presenter.userChangesTime();
-            }
-        });
     }
 
 
