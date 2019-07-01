@@ -155,7 +155,7 @@ class ChangeClockPresenter implements ChangeClockContract.Presenter {
      * @param index   index of element in DB that need change
      */
     private void changeValuesDataBase(String oldTime, String newTime, long index) {
-        LocalDataBase localDataBase = LocalDataBase.init();
+        LocalDataBase localDataBase = LocalDataBase.getInstance();
         localDataBase.changeTime(index, newTime);
         localDataBase.changeSwitch(index, true);
     }
@@ -166,7 +166,7 @@ class ChangeClockPresenter implements ChangeClockContract.Presenter {
      * @param index index of element that need remove
      */
     private void deleteClockInDataBase(long index) {
-        LocalDataBase localDataBase = LocalDataBase.init();
+        LocalDataBase localDataBase = LocalDataBase.getInstance();
         localDataBase.removeClock(index);
     }
 

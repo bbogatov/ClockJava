@@ -24,7 +24,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         AlarmPlayer.getInstance().playAlarmSong();
 
         //Change switch value in database
-        LocalDataBase localDataBase = LocalDataBase.init();
+        LocalDataBase localDataBase = LocalDataBase.getInstance();
         localDataBase.changeSwitch(index, false);
     }
 }

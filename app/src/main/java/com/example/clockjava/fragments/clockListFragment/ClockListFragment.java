@@ -46,14 +46,12 @@ public class ClockListFragment extends Fragment implements ClockListContract.Vie
      * This method adds recycler view of all clocks
      */
     private void addRecyclerView() {
-        Logger.log("Добавляем рекуклер вью");
-        adapter = new ClockAdapter(getActivity());
+        adapter = ClockAdapter.getInstance(getActivity());
 
         alarmsRecyclerView = view.findViewById(R.id.alarms_list);
         alarmsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter.setAlarms(alarmArrayList);
         alarmsRecyclerView.setAdapter(adapter);
-        Logger.log("Рекуклер вью добавлен");
     }
 
 }

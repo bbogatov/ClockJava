@@ -7,8 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.clockjava.App;
 import com.example.clockjava.logger.Logger;
 import com.example.clockjava.R;
+import com.example.clockjava.observerInterfaces.Observed;
+import com.example.clockjava.observerInterfaces.Observer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 //TODO нужно будет еще вызывать RecyclerView используя  в DataBase что бы сообщить об изменениях
 
@@ -17,7 +20,7 @@ import java.util.ArrayList;
  * For example:  LocalDataBase localDataBase = LocalDataBase.getInstance();
  * localDataBase.changeEnable(id);
  */
-public class LocalDataBase {
+public class LocalDataBase implements Observed {
 
     /**
      * Static class object
@@ -35,12 +38,16 @@ public class LocalDataBase {
     private static final String DATA_BASE_NAME =
             App.getContext().getResources().getString(R.string.alarms_data_base_name);
 
+    private List<Observer> observersList;
+
+
     /**
      * Class constructor
      */
     private LocalDataBase() {
         DataBaseOpenHelper dbHelper = new DataBaseOpenHelper(App.getContext(), DATA_BASE_NAME, null, 1);
         sqLiteDatabase = dbHelper.getWritableDatabase();
+        observersList = new ArrayList<>();
     }
 
     /**
@@ -48,23 +55,30 @@ public class LocalDataBase {
      *
      * @return static database
      */
-    public static LocalDataBase init() {
+    public static LocalDataBase getInstance() {
         if (localDataBase == null) {
             localDataBase = new LocalDataBase();
         }
         return localDataBase;
     }
 
+    /**
+     * Method adds new clock to database, and returns its index in database.
+     *
+     * @param time time when clock should start
+     * @return index in database
+     */
     public long addClock(String time) {
+        long id = 0;
         if (sqLiteDatabase != null) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("time", time);
             contentValues.put("switch", true);
-            long id = sqLiteDatabase.insert(DATA_BASE_NAME, null, contentValues);
+            id = sqLiteDatabase.insert(DATA_BASE_NAME, null, contentValues);
             Logger.log("Added new clock to data base: time = " + time + "; id = " + id);
-            return id;
         }
-        return 0;
+        notifyObservers();
+        return id;
     }
 
     /**
@@ -77,6 +91,7 @@ public class LocalDataBase {
             sqLiteDatabase.delete(DATA_BASE_NAME, "id = " + id, null);
             Logger.log("Removed clock from data base:  " + id + " + Id");
         }
+        notifyObservers();
     }
 
     /**
@@ -95,6 +110,7 @@ public class LocalDataBase {
                     + "; id = " + id
                     + "; switch = " + true);
         }
+        notifyObservers();
     }
 
     /**
@@ -140,6 +156,36 @@ public class LocalDataBase {
             Logger.log("Updated switch in data base:"
                     + "; id = " + id
                     + "; switch = " + true);
+        }
+    }
+
+    /**
+     * Method adds new observer that using this database for drawing all clocks.
+     *
+     * @param observer observer that used this database
+     */
+    @Override
+    public void addObserver(Observer observer) {
+        this.observersList.add(observer);
+    }
+
+    /**
+     * Method removes observer that don't need this database.
+     *
+     * @param observer observer that do not use this database
+     */
+    @Override
+    public void removeObserver(Observer observer) {
+        this.observersList.remove(observer);
+    }
+
+    /**
+     * Method notifies all observers to redraw recyclerView, that contains all clock alarms.
+     */
+    @Override
+    public void notifyObservers() {
+        for (Observer observer : observersList) {
+            observer.handleEvent(getAlarms());
         }
     }
 }

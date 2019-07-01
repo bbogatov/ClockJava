@@ -21,7 +21,7 @@ public class ClockListPresenter implements ClockListContract.Presenter {
      */
     @Override
     public ArrayList<Alarm> getClockData() {
-        LocalDataBase localDataBase = LocalDataBase.init();
+        LocalDataBase localDataBase = LocalDataBase.getInstance();
         return localDataBase.getAlarms();
     }
 }

@@ -41,7 +41,7 @@ public class NewClockPresenter implements NewClockContract.Presenter {
      * @return index of new added clock from database, this index auto increasing
      */
     private long addNewClockDataBase(String time) {
-        LocalDataBase localDataBase = LocalDataBase.init();
+        LocalDataBase localDataBase = LocalDataBase.getInstance();
         return localDataBase.addClock(time);
     }
 

@@ -13,13 +13,22 @@ import android.widget.TextView;
 import com.example.clockjava.R;
 import com.example.clockjava.activities.changeClockActivity.ChangeClockActivity;
 import com.example.clockjava.database.Alarm;
+import com.example.clockjava.database.LocalDataBase;
+import com.example.clockjava.observerInterfaces.Observer;
 
 import java.util.ArrayList;
 
+
 /**
- * This class used for creating array of clocks on screen using RecyclerView class
+ * This class used for creating array of clocks on screen using RecyclerView class.
+ * Class created as singleton pattern.
  */
-public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolder> {
+public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolder> implements Observer {
+
+    /**
+     * This is static object used for creating singleton pattern.
+     */
+    private static ClockAdapter clockAdapter;
 
     /**
      * List of alarm clocks from database
@@ -31,14 +40,23 @@ public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolder>
      */
     private Activity activity;
 
-    /**
-     * Main constructor that creates recycler view
-     * @param activity activty where need show recycler view
-     */
-    public ClockAdapter(Activity activity) {
+    private ClockAdapter(Activity activity) {
+        LocalDataBase localDataBase = LocalDataBase.getInstance();
+        localDataBase.addObserver(this);
         this.activity = activity;
     }
 
+    /**
+     * Main method that returns initialized recyclerView.
+     *
+     * @return recycler view that response for showing list of clocks on the main activity.
+     */
+    public static ClockAdapter getInstance(Activity activity) {
+        if (clockAdapter == null) {
+            clockAdapter = new ClockAdapter(activity);
+        }
+        return clockAdapter;
+    }
 
     @NonNull
     @Override
@@ -70,6 +88,12 @@ public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolder>
      * @param alarms array of clocks
      */
     public void setAlarms(ArrayList<Alarm> alarms) {
+        this.alarms = alarms;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void handleEvent(ArrayList<Alarm> alarms) {
         this.alarms = alarms;
         notifyDataSetChanged();
     }

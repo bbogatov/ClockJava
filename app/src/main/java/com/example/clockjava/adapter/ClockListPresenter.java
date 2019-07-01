@@ -38,7 +38,7 @@ public class ClockListPresenter implements ClockAdapterContract.Presenter {
      * @param aSwitch new switch value
      */
     private void changeDataBaseValue(long index, boolean aSwitch) {
-        LocalDataBase localDataBase = LocalDataBase.init();
+        LocalDataBase localDataBase = LocalDataBase.getInstance();
         localDataBase.changeSwitch(index, aSwitch);
     }
 
