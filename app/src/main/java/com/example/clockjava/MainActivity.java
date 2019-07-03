@@ -14,9 +14,6 @@ import com.example.clockjava.logger.Logger;
 public class MainActivity extends AppCompatActivity {
 
 
-    private ClockListFragment alarmListFragment;
-    private AddClockFragment clockButtonFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Logger.log("Create main activity");
@@ -24,8 +21,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        alarmListFragment = new ClockListFragment();
-        clockButtonFragment = new AddClockFragment();
+        ClockListFragment alarmListFragment = new ClockListFragment();
+        AddClockFragment clockButtonFragment = new AddClockFragment();
 
         FragmentTransaction upperFragmentTrans = getSupportFragmentManager().beginTransaction();
         upperFragmentTrans.add(R.id.list_fragment, alarmListFragment);
@@ -33,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         FragmentTransaction lowerFragmentTrans = getSupportFragmentManager().beginTransaction();
-        lowerFragmentTrans.add(R.id.button_freagment, clockButtonFragment);
+        lowerFragmentTrans.add(R.id.button_fragment, clockButtonFragment);
         lowerFragmentTrans.commit();
     }
 }

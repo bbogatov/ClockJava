@@ -13,8 +13,6 @@ import com.example.clockjava.observerInterfaces.Observer;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO нужно будет еще вызывать RecyclerView используя  в DataBase что бы сообщить об изменениях
-
 /**
  * Class represents local database. Before work with it you should initialize it.
  * For example:  LocalDataBase localDataBase = LocalDataBase.getInstance();
@@ -118,8 +116,8 @@ public class LocalDataBase implements Observed {
      *
      * @return arrayList of active and inactive clocks
      */
-    public ArrayList<Alarm> getAlarms() {
-        ArrayList<Alarm> alarms = new ArrayList<>();
+    public ArrayList<ClockAlarm> getAlarms() {
+        ArrayList<ClockAlarm> clockAlarms = new ArrayList<>();
 
         Cursor cursor = sqLiteDatabase.query(DATA_BASE_NAME, null, null, null, null, null, null);
 
@@ -130,14 +128,14 @@ public class LocalDataBase implements Observed {
             int enableColumn = cursor.getColumnIndex("switch");
 
             do {
-                alarms.add(new Alarm(cursor.getLong(indexColumn),
+                clockAlarms.add(new ClockAlarm(cursor.getLong(indexColumn),
                         cursor.getString(timeColumn),
                         cursor.getInt(enableColumn) > 0));
             } while (cursor.moveToNext());
 
         }
         cursor.close();
-        return alarms;
+        return clockAlarms;
     }
 
     /**

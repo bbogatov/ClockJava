@@ -1,6 +1,6 @@
 package com.example.clockjava.fragments.clockListFragment;
 
-import com.example.clockjava.database.Alarm;
+import com.example.clockjava.database.ClockAlarm;
 import com.example.clockjava.database.LocalDataBase;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class ClockListPresenter implements ClockListContract.Presenter {
      * @return array of clocks (active and inactive)
      */
     @Override
-    public ArrayList<Alarm> getClockData() {
+    public ArrayList<ClockAlarm> getClockData() {
         LocalDataBase localDataBase = LocalDataBase.getInstance();
         return localDataBase.getAlarms();
     }

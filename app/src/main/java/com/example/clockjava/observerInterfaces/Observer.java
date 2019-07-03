@@ -1,10 +1,10 @@
 package com.example.clockjava.observerInterfaces;
 
 
-import com.example.clockjava.database.Alarm;
+import com.example.clockjava.database.ClockAlarm;
 
 import java.util.ArrayList;
 
 public interface Observer {
-    void handleEvent(ArrayList<Alarm> alarms);
+    void handleEvent(ArrayList<ClockAlarm> clockAlarms);
 }

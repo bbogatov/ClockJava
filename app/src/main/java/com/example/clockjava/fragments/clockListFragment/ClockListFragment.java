@@ -12,18 +12,14 @@ import android.view.ViewGroup;
 
 import com.example.clockjava.R;
 import com.example.clockjava.adapter.ClockAdapter;
-import com.example.clockjava.database.Alarm;
-import com.example.clockjava.logger.Logger;
+import com.example.clockjava.database.ClockAlarm;
 
 import java.util.ArrayList;
 
 public class ClockListFragment extends Fragment implements ClockListContract.View {
 
-    private RecyclerView alarmsRecyclerView;
-    private ClockAdapter adapter;
-    private ArrayList<Alarm> alarmArrayList;
+    private ArrayList<ClockAlarm> clockAlarmArrayList;
     private View view;
-    private ClockListContract.Presenter presenter;
 
 
     @Nullable
@@ -31,10 +27,10 @@ public class ClockListFragment extends Fragment implements ClockListContract.Vie
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_clock_list, null);
 
-        presenter = new ClockListPresenter(this);
+        ClockListContract.Presenter presenter = new ClockListPresenter(this);
 
         //gets all clocks from presenter
-        alarmArrayList = presenter.getClockData();
+        clockAlarmArrayList = presenter.getClockData();
 
         addRecyclerView();
 
@@ -46,11 +42,11 @@ public class ClockListFragment extends Fragment implements ClockListContract.Vie
      * This method adds recycler view of all clocks
      */
     private void addRecyclerView() {
-        adapter = ClockAdapter.getInstance(getActivity());
+        ClockAdapter adapter = ClockAdapter.getInstance(getActivity());
+        adapter.setClockAlarms(clockAlarmArrayList);
 
-        alarmsRecyclerView = view.findViewById(R.id.alarms_list);
+        RecyclerView alarmsRecyclerView = view.findViewById(R.id.alarms_list);
         alarmsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter.setAlarms(alarmArrayList);
         alarmsRecyclerView.setAdapter(adapter);
     }
 

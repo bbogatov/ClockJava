@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.example.clockjava.R;
 import com.example.clockjava.activities.changeClockActivity.ChangeClockActivity;
-import com.example.clockjava.database.Alarm;
+import com.example.clockjava.database.ClockAlarm;
 import com.example.clockjava.database.LocalDataBase;
 import com.example.clockjava.observerInterfaces.Observer;
 
@@ -33,7 +33,7 @@ public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolder>
     /**
      * List of alarm clocks from database
      */
-    private ArrayList<Alarm> alarms;
+    private ArrayList<ClockAlarm> clockAlarms;
 
     /**
      * Activity where need show recycler view
@@ -69,32 +69,32 @@ public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolder>
 
     @Override
     public void onBindViewHolder(@NonNull AlarmHolder alarmHolder, int i) {
-        alarmHolder.bind(alarms.get(i));
+        alarmHolder.bind(clockAlarms.get(i));
     }
 
     /**
-     * Returns quantity of alarms
+     * Returns quantity of clockAlarms
      *
-     * @return alarms quantity
+     * @return clockAlarms quantity
      */
     @Override
     public int getItemCount() {
-        return alarms.size();
+        return clockAlarms.size();
     }
 
     /**
      * This class takes array of clocks and shows them on screen
      *
-     * @param alarms array of clocks
+     * @param clockAlarms array of clocks
      */
-    public void setAlarms(ArrayList<Alarm> alarms) {
-        this.alarms = alarms;
+    public void setClockAlarms(ArrayList<ClockAlarm> clockAlarms) {
+        this.clockAlarms = clockAlarms;
         notifyDataSetChanged();
     }
 
     @Override
-    public void handleEvent(ArrayList<Alarm> alarms) {
-        this.alarms = alarms;
+    public void handleEvent(ArrayList<ClockAlarm> clockAlarms) {
+        this.clockAlarms = clockAlarms;
         notifyDataSetChanged();
     }
 
@@ -140,12 +140,13 @@ public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolder>
         /**
          * Method sets clocks values from database to current elements on the screen
          *
-         * @param alarm clock alarm signal that need to add on the screen
+         * @param clockAlarm clock clockAlarm signal that need to add on the screen
          */
-        void bind(Alarm alarm) {
-            aSwitch.setChecked(alarm.getEnable());
-            textView.setText(alarm.getTime());
-            index = alarm.getId();
+        void bind(ClockAlarm clockAlarm) {
+            aSwitch.setChecked(clockAlarm.getEnable());
+            textView.setText(clockAlarm.getTime());
+            index = clockAlarm.getId();
         }
     }
 }
+

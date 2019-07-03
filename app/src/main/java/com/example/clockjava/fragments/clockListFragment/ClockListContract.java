@@ -1,6 +1,6 @@
 package com.example.clockjava.fragments.clockListFragment;
 
-import com.example.clockjava.database.Alarm;
+import com.example.clockjava.database.ClockAlarm;
 
 import java.util.ArrayList;
 
@@ -11,6 +11,6 @@ interface ClockListContract {
     }
 
     interface Presenter {
-        ArrayList<Alarm> getClockData();
+        ArrayList<ClockAlarm> getClockData();
     }
 }

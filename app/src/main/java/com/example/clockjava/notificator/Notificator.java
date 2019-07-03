@@ -54,7 +54,7 @@ public class Notificator {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(App.getContext());
         builder.setSmallIcon(R.drawable.clock_img);
-        builder.setContentTitle("Alarm " + time);
+        builder.setContentTitle("ClockAlarm " + time);
         builder.setContentText("Wake up");
         builder.setOngoing(true);
         builder.setSound(null);
@@ -66,7 +66,7 @@ public class Notificator {
 
             NotificationChannel notificationChannel =
                     new NotificationChannel("10002",
-                            "Alarm Clock Alarm",
+                            "ClockAlarm Clock ClockAlarm",
                             NotificationManager.IMPORTANCE_HIGH);
 
             notificationChannel.setSound(null, null);

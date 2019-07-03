@@ -5,25 +5,45 @@ import java.util.Objects;
 /**
  * This class used for keeping alarms from database in array that used in recyclerView
  */
-public class Alarm {
+public class ClockAlarm {
     private final boolean enable;
     private final String time;
     private final Long id;
 
-    public Alarm(Long id, String time, boolean enable) {
+    /**
+     * Method that creates new clock signal.
+     *
+     * @param id id of clock from database
+     * @param time time whent clock should start
+     * @param enable
+     */
+    public ClockAlarm(Long id, String time, boolean enable) {
         this.enable = enable;
         this.time = time;
         this.id = id;
     }
 
+    /**
+     * Method that returns value does current clock enabled or not
+     *
+     * @return
+     */
     public boolean getEnable() {
         return enable;
     }
 
+    /**
+     * @return returns alarm time for clock
+     */
     public String getTime() {
         return time;
     }
 
+    /**
+     * Returns id of clock from database
+     *
+     * @return
+     */
     public Long getId() {
         return id;
     }
@@ -32,10 +52,10 @@ public class Alarm {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Alarm alarm = (Alarm) o;
-        return enable == alarm.enable &&
-                time.equals(alarm.time) &&
-                id.equals(alarm.id);
+        ClockAlarm clockAlarm = (ClockAlarm) o;
+        return enable == clockAlarm.enable &&
+                time.equals(clockAlarm.time) &&
+                id.equals(clockAlarm.id);
     }
 
     @Override
@@ -45,7 +65,7 @@ public class Alarm {
 
     @Override
     public String toString() {
-        return "Alarm{" +
+        return "ClockAlarm{" +
                 "enable=" + enable +
                 ", time='" + time + '\'' +
                 ", id=" + id +

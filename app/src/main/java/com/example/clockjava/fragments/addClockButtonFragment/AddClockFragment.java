@@ -20,14 +20,13 @@ import com.example.clockjava.activities.newClockActivity.NewClockActivity;
 public class AddClockFragment extends Fragment implements AddClockContract.View {
 
     private ImageButton addClockButton;
-    private View view;
     private AddClockContract.Presenter presenter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_new_clock_button, null);
+        View view = inflater.inflate(R.layout.fragment_new_clock_button, null);
 
         presenter = new AddClockPresenter(this);
 

@@ -12,10 +12,6 @@ import android.widget.TimePicker;
 
 import com.example.clockjava.R;
 
-
-//TODO провернить что бы не возвращало результат setResult() или оно должно обрабатывать результат
-
-
 /**
  * This class used for changing clock time or deleting clock.
  */

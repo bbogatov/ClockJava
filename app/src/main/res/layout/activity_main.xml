@@ -12,14 +12,14 @@
         android:id="@+id/list_fragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/button_freagment"
+        app:layout_constraintBottom_toTopOf="@+id/button_fragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <FrameLayout
-        android:id="@+id/button_freagment"
+        android:id="@+id/button_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
