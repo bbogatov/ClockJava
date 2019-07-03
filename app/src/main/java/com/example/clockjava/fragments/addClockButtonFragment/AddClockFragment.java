@@ -43,6 +43,6 @@ public class AddClockFragment extends Fragment implements AddClockContract.View 
     @Override
     public void showNewClockActivity() {
         Intent newClockIntent = new Intent(getContext(), NewClockActivity.class);
-        startActivityForResult(newClockIntent, 1);
+        startActivity(newClockIntent);
     }
 }

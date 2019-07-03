@@ -14,6 +14,7 @@ import com.example.clockjava.R;
 import com.example.clockjava.activities.changeClockActivity.ChangeClockActivity;
 import com.example.clockjava.database.ClockAlarm;
 import com.example.clockjava.database.LocalDataBase;
+import com.example.clockjava.logger.Logger;
 import com.example.clockjava.observerInterfaces.Observer;
 
 import java.util.ArrayList;
