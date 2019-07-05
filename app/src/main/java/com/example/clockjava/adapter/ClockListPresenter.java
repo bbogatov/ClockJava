@@ -5,7 +5,7 @@ import com.example.clockjava.alarmManger.ClockAlarmsManger;
 
 public class ClockListPresenter implements ClockAdapterContract.Presenter {
 
-    ClockAdapterContract.View alarmHolder;
+    private ClockAdapterContract.View alarmHolder;
 
     ClockListPresenter(ClockAdapterContract.View alarmHolder) {
         this.alarmHolder = alarmHolder;
@@ -16,6 +16,7 @@ public class ClockListPresenter implements ClockAdapterContract.Presenter {
      *
      * @param index   index of element that need change
      * @param aSwitch new switch value
+     * @param time time when clock must start working
      */
     @Override
     public void switchPressed(long index, boolean aSwitch, String time) {
@@ -32,14 +33,13 @@ public class ClockListPresenter implements ClockAdapterContract.Presenter {
     }
 
     /**
-     * Code changes switch value in database
+     * Method changes switch value in database
      *
      * @param index   index of element that need change
      * @param aSwitch new switch value
      */
     private void changeDataBaseValue(long index, boolean aSwitch) {
-        LocalDataBase localDataBase = LocalDataBase.getInstance();
-        localDataBase.changeSwitch(index, aSwitch);
+        LocalDataBase.getInstance().changeSwitch(index, aSwitch);
     }
 
     /**
@@ -47,11 +47,10 @@ public class ClockListPresenter implements ClockAdapterContract.Presenter {
      *
      * @param index   index of element that need change
      * @param aSwitch future switch value
-     * @param time
+     * @param time time for clock that need change
      */
     private void changeAlarmManager(long index, boolean aSwitch, String time) {
-        ClockAlarmsManger clockAlarmsManger = new ClockAlarmsManger();
-        clockAlarmsManger.onSwitchChanged(aSwitch, index, time);
+        new ClockAlarmsManger().onSwitchChanged(aSwitch, index, time);
     }
 
 }

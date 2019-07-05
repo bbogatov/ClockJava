@@ -11,10 +11,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.clockjava.R;
-import com.example.clockjava.activities.changeClockActivity.ChangeClockActivity;
+import com.example.clockjava.activities.changeClock.ChangeClockActivity;
 import com.example.clockjava.database.ClockAlarm;
 import com.example.clockjava.database.LocalDataBase;
-import com.example.clockjava.logger.Logger;
 import com.example.clockjava.observerInterfaces.Observer;
 
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ import java.util.ArrayList;
  * This class used for creating array of clocks on screen using RecyclerView class.
  * Class created as singleton pattern.
  */
-public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolder> implements Observer {
+public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolderView> implements Observer {
 
     /**
      * This is static object used for creating singleton pattern.
@@ -61,16 +60,16 @@ public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolder>
 
     @NonNull
     @Override
-    public AlarmHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public AlarmHolderView onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
                 R.layout.recycler_view_item, viewGroup, false);
 
-        return new AlarmHolder(view);
+        return new AlarmHolderView(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AlarmHolder alarmHolder, int i) {
-        alarmHolder.bind(clockAlarms.get(i));
+    public void onBindViewHolder(@NonNull AlarmHolderView alarmHolderView, int i) {
+        alarmHolderView.bind(clockAlarms.get(i));
     }
 
     /**
@@ -102,7 +101,7 @@ public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolder>
     /**
      * Class that add one clock element to the screen
      */
-    class AlarmHolder extends RecyclerView.ViewHolder implements ClockAdapterContract.View {
+    class AlarmHolderView extends RecyclerView.ViewHolder implements ClockAdapterContract.View {
 
         private Switch aSwitch;
         private TextView textView;
@@ -112,7 +111,7 @@ public class ClockAdapter extends RecyclerView.Adapter<ClockAdapter.AlarmHolder>
         /**
          * Shows clocks elements on screen
          */
-        AlarmHolder(@NonNull View itemView) {
+        AlarmHolderView(@NonNull View itemView) {
             super(itemView);
 
             presenter = new ClockListPresenter(this);

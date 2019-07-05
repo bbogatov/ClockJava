@@ -1,4 +1,4 @@
-package com.example.clockjava.activities.newClockActivity;
+package com.example.clockjava.activities.newClock;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -42,10 +42,10 @@ public class NewClockActivity extends AppCompatActivity implements NewClockContr
         timePicker.setIs24HourView(true);
 
         applyButton = findViewById(R.id.apply_button);
-        applyButton.setOnClickListener((View v) -> presenter.addNewClockBackMainActivity(getString(R.string.time_format_string, timePicker.getCurrentHour(), timePicker.getCurrentMinute())));
+        applyButton.setOnClickListener((View v) -> presenter.applyButtonPressed(getString(R.string.time_format_string, timePicker.getCurrentHour(), timePicker.getCurrentMinute())));
 
         discardButton = findViewById(R.id.discard_button);
-        discardButton.setOnClickListener((View v) -> presenter.finishActivity());
+        discardButton.setOnClickListener((View v) -> presenter.closeButtonPressed());
     }
 
 

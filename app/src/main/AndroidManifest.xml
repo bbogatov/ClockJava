@@ -17,8 +17,8 @@
         <receiver android:name=".receivers.NotificationButtonReceiver" />
         <receiver android:name=".receivers.AlarmReceiver" />
 
-        <activity android:name=".activities.changeClockActivity.ChangeClockActivity" />
-        <activity android:name=".activities.newClockActivity.NewClockActivity" />
+        <activity android:name=".activities.changeClock.ChangeClockActivity" />
+        <activity android:name=".activities.newClock.NewClockActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,8 +1,12 @@
-package com.example.clockjava.activities.newClockActivity;
+package com.example.clockjava.activities.newClock;
 
 import com.example.clockjava.database.LocalDataBase;
 import com.example.clockjava.alarmManger.ClockAlarmsManger;
 
+/**
+ * Class that contains logic for {@link NewClockPresenter} class.
+ * This class add new clock to database and creates new alarm manager.
+ */
 public class NewClockPresenter implements NewClockContract.Presenter {
 
     private NewClockContract.View view;
@@ -18,19 +22,19 @@ public class NewClockPresenter implements NewClockContract.Presenter {
      * @param time time in witch clock will starts
      */
     @Override
-    public void addNewClockBackMainActivity(String time) {
+    public void applyButtonPressed(String time) {
         long newClockIndex = addNewClockDataBase(time);
         addNewAlarmManger(time, newClockIndex);
         view.showMessage(time);
-        finishActivity();
+        closeActivity();
     }
 
     /**
      * When user clicks close button this code runs and closes current activity.
      */
     @Override
-    public void finishActivity() {
-        view.finishActivity();
+    public void closeButtonPressed() {
+        closeActivity();
     }
 
     /**
@@ -55,5 +59,12 @@ public class NewClockPresenter implements NewClockContract.Presenter {
     private void addNewAlarmManger(String time, long index) {
         ClockAlarmsManger clockAlarmsManger = new ClockAlarmsManger();
         clockAlarmsManger.addAlarmSignal(time, index);
+    }
+
+    /**
+     * Method closed current activity
+     */
+    private void closeActivity() {
+        view.finishActivity();
     }
 }

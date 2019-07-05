@@ -1,4 +1,4 @@
-package com.example.clockjava.activities.newClockActivity;
+package com.example.clockjava.activities.newClock;
 
 public interface NewClockContract {
     interface View {
@@ -7,8 +7,8 @@ public interface NewClockContract {
     }
 
     interface Presenter {
-        void addNewClockBackMainActivity(String  time);
-        void finishActivity();
+        void applyButtonPressed(String  time);
+        void closeButtonPressed();
     }
 
 }

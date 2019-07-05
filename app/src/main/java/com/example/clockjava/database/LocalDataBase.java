@@ -105,8 +105,7 @@ public class LocalDataBase implements Observed {
             sqLiteDatabase.update(DATA_BASE_NAME, contentValues, "id = ?", new String[]{String.valueOf(id)});
             Logger.log("Updated time in data base:"
                     + " time = " + time
-                    + "; id = " + id
-                    + "; switch = " + true);
+                    + "; id = " + id);
         }
         notifyObservers();
     }
@@ -153,7 +152,7 @@ public class LocalDataBase implements Observed {
 
             Logger.log("Updated switch in data base:"
                     + "; id = " + id
-                    + "; switch = " + true);
+                    + "; switch = " + isChecked);
         }
     }
 

@@ -10,8 +10,6 @@ import com.example.clockjava.App;
 import com.example.clockjava.logger.Logger;
 import com.example.clockjava.receivers.AlarmReceiver;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -42,7 +40,7 @@ public class ClockAlarmsManger {
      * @param id   id of clock in database
      * @return returns intent that
      */
-    private Intent getIntent(String time, long id, Context context) {
+    private Intent getIntent(String time, long id) {
         Intent intent = new Intent(context, AlarmReceiver.class);
         intent.setAction("ClockAlarm " + time);
         intent.putExtra("time", time);
@@ -57,19 +55,20 @@ public class ClockAlarmsManger {
      * @param intent alarm intent that will be pending
      * @return pending intent
      */
-    private PendingIntent getPendingIntent(Context context, Intent intent) {
+    private PendingIntent getPendingIntent(Intent intent) {
         return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
     }
 
     /**
+     * Method adds new alarm clock signal
      *
-     * @param time
-     * @param id
+     * @param time time when clock should start work, in this standard HH:MM with leading zeroes
+     * @param id id of clock from database
      */
     public void addAlarmSignal(String time, long id) {
         context = getContext();
-        intent = getIntent(time, id, context);
-        pendingIntent = getPendingIntent(context, intent);
+        intent = getIntent(time, id);
+        pendingIntent = getPendingIntent(intent);
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
 
@@ -94,8 +93,8 @@ public class ClockAlarmsManger {
      */
     public void removeAlarm(String time, long id) {
         context = getContext();
-        intent = getIntent(time, id, context);
-        pendingIntent = getPendingIntent(context, intent);
+        intent = getIntent(time, id);
+        pendingIntent = getPendingIntent(intent);
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         pendingIntent.cancel();

@@ -1,4 +1,4 @@
-package com.example.clockjava.activities.changeClockActivity;
+package com.example.clockjava.activities.changeClock;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -161,4 +161,6 @@ public class ChangeClockActivity extends AppCompatActivity implements ChangeCloc
         alertDialog.show();
 
     }
+
+
 }

@@ -1,4 +1,4 @@
-package com.example.clockjava.activities.changeClockActivity;
+package com.example.clockjava.activities.changeClock;
 
 import android.widget.TimePicker;
 
@@ -12,14 +12,14 @@ interface ChangeClockContract {
 
     interface Presenter {
         void setAlarmTimeTimePicker(String time, TimePicker timePicker);
-        void applyButtonClicked(boolean timeChanged, String newTime, String oldTime, long index);
+        void applyButtonClicked(boolean timeChanged, String newTime, String oldTime, long id);
         void discardButtonClicked(boolean timeChanged);
         void deleteButtonClicked();
-        void deleteClockPositiveButtonClicked(long index, String time);
+        void deleteClockPositiveButtonClicked(long id, String time);
         void deleteClockNegativeButtonClicked();
         boolean userChangesTime();
         void negativeAlertButtonClicked();
-        void positiveAlertButtonClicked(boolean timeChanged, String newTime, String oldTime, long index);
+        void positiveAlertButtonClicked(boolean timeChanged, String newTime, String oldTime, long id);
     }
 
 }
