@@ -155,7 +155,7 @@ class ChangeClockPresenter implements ChangeClockContract.Presenter {
      */
     private void changeAlarmManger(String oldTime, String newTime, long id) {
         ClockAlarmsManger clockAlarmsManger = new ClockAlarmsManger();
-        clockAlarmsManger.changeAlarm(oldTime, newTime, id);
+        clockAlarmsManger.changeAlarmTime(oldTime, newTime, id);
     }
 
     /**

@@ -83,7 +83,6 @@ public class ClockAlarmsManger {
         Logger.log("Create new alarmManager. Time = " + time + "; id = " + id);
     }
 
-
     /**
      * Method removes alarm signal
      *
@@ -112,7 +111,7 @@ public class ClockAlarmsManger {
      *                using 24-hours format with leading zeroes
      * @param id      alarm clock id in database
      */
-    public void changeAlarm(String oldTime, String newTime, long id) {
+    public void changeAlarmTime(String oldTime, String newTime, long id) {
         removeAlarm(oldTime, id);
         addAlarmSignal(newTime, id);
         Logger.log("Change time for alarmManager. Id = " + id

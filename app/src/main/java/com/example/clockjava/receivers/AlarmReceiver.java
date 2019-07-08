@@ -15,7 +15,7 @@ import com.example.clockjava.notificator.AlarmPlayer;
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        long index = intent.getLongExtra("index", 0);
+        long index = intent.getLongExtra("id", 0);
         String time = intent.getStringExtra("time");
 
 
