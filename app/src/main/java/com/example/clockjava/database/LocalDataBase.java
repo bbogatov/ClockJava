@@ -71,7 +71,7 @@ public class LocalDataBase implements Observed {
         if (sqLiteDatabase != null) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("time", time);
-            contentValues.put("switch", true);
+            contentValues.put("enable", true);
             id = sqLiteDatabase.insert(DATA_BASE_NAME, null, contentValues);
             Logger.log("Added new clock to data base: time = " + time + "; id = " + id);
         }
@@ -124,7 +124,7 @@ public class LocalDataBase implements Observed {
 
             int indexColumn = cursor.getColumnIndex("id");
             int timeColumn = cursor.getColumnIndex("time");
-            int enableColumn = cursor.getColumnIndex("switch");
+            int enableColumn = cursor.getColumnIndex("enable");
 
             do {
                 clockAlarms.add(new ClockAlarm(cursor.getLong(indexColumn),
@@ -146,14 +146,15 @@ public class LocalDataBase implements Observed {
     public void changeSwitch(long id, boolean isChecked) {
         if (sqLiteDatabase != null) {
             ContentValues contentValues = new ContentValues();
-            contentValues.put("switch", isChecked);
+            contentValues.put("enable", isChecked);
 
             sqLiteDatabase.update(DATA_BASE_NAME, contentValues, "id = ?", new String[]{String.valueOf(id)});
 
             Logger.log("Updated switch in data base:"
                     + "; id = " + id
-                    + "; switch = " + isChecked);
+                    + "; enable = " + isChecked);
         }
+        notifyObservers();
     }
 
     /**

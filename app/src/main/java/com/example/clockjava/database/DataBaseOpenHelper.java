@@ -13,9 +13,9 @@ import com.example.clockjava.logger.Logger;
 public class DataBaseOpenHelper extends SQLiteOpenHelper {
 
     private static String dbName;
-    private static final String KEY_ID = "_id";
-    private static final String TIME = "_time";
-    private static final String SWITCH = "_switch";
+    private static final String KEY_ID = "id";
+    private static final String TIME = "time";
+    private static final String ENABLE = "enable";
 
 
     DataBaseOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -30,7 +30,7 @@ public class DataBaseOpenHelper extends SQLiteOpenHelper {
         db.execSQL("create table " + dbName + " ("
                 + KEY_ID + " integer primary key autoincrement,"
                 + TIME + " text,"
-                + SWITCH + " bollean" + ");");
+                + ENABLE + " bollean" + ");");
     }
 
     @Override
